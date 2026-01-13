@@ -6,7 +6,7 @@
 /*   By: jfernand <jfernand@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:48:38 by jfernand          #+#    #+#             */
-/*   Updated: 2026/01/12 19:58:26 by jfernand         ###   ########.fr       */
+/*   Updated: 2026/01/13 18:05:01 by jfernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,37 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+
+int	Account::_nbAccounts = 0;
+int Account::_totalAmount = 0;
+int Account::_totalNbDeposits = 0;
+int Account::_totalNbWithdrawals = 0;
+
+Account::Account(int initial_deposit)
+{
+	_accountIndex = _nbAccounts;
+	_amount = initial_deposit;
+	_nbDeposits = 0;
+	_nbWithdrawals = 0;
+	_nbAccounts++;
+	_totalAmount += initial_deposit;
+
+	Account::_displayTimestamp();
+	std::cout << "index:" << _accountIndex << ";"
+		<< "amount:" << _amount << ";"
+		<< "created" << std::endl;
+}
+
+Account::~Account(void)
+{
+	Account::_displayTimestamp();
+	std::cout << "index:" << _accountIndex << ";"
+		<< "amount:" << _amount << ";"
+		<< "closed" << std::endl;
+
+	_nbAccounts--;
+	_totalAmount -= _amount;
+}
 
 void	Account::makeDeposit(int deposit)
 {
@@ -70,6 +101,15 @@ void	Account::displayAccountsInfos(void)
 		<< "withdrawals:" << withdrawals << std::endl;
 }
 
+void	Account::displayStatus(void) const
+{
+	_displayTimestamp();
+	std::cout << "index:" << _accountIndex << ";"
+		<< "amount:" << _amount << ";"
+		<< "deposits:" << _nbDeposits << ";"
+		<< "withdrawals:" << _nbWithdrawals << std::endl;
+}
+
 int	Account::getNbWithdrawals()
 {
 	return (_totalNbWithdrawals);
@@ -92,7 +132,7 @@ int	Account::getNbAccounts()
 
 void Account::_displayTimestamp(void)
 {
-    std::time_t t = std::time(nullptr);
+    std::time_t t = std::time(NULL);
     std::tm *tm = std::localtime(&t);
 
     std::cout << "["
