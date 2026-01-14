@@ -8,7 +8,7 @@ public:
 	PhoneBook();
 	void	AddContact(const Contact &Contact);
 	void	PrintContact(int index) const;
-	void	ListContact() const;
+	bool	ListContact() const;
 	int		GetSize(void) const;
 	
 private:

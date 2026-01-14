@@ -1,6 +1,6 @@
 #include "PhoneBook.hpp"
-#include <iomanip>
 #include <iostream>
+#include <iomanip>
 
 PhoneBook::PhoneBook() : count(0), size(0)
 {
@@ -39,13 +39,31 @@ void	PhoneBook::PrintContact(int index) const
 	std::cout << "Darkest Secret: " << contact[index].get_secret() << std::endl;
 }
 
-void	PhoneBook::ListContact() const
+bool	PhoneBook::ListContact() const
 {
-	for(int i = 0; i < count && i < size; i++)
+	if (count == 0)
 	{
-	 std::cout << std::setw(10) << i << " | "
-			<< std::setw(10) << truncate_s(contact[i].get_first()) << " | "
-			<< std::setw(10) << truncate_s(contact[i].get_last()) << " | "
-			<< std::setw(10) << truncate_s(contact[i].get_nick()) << std::endl;
+		std::cout << "No contacts available.\n";
+		return (false);
 	}
+	int oldest_index;
+
+	if(count < 8)
+		oldest_index = 0;
+	else
+		oldest_index = count % 8;
+	std::cout << std::setw(10) << "Index" << " | "
+		<< std::setw(10) << "First Name" << " | "
+		<< std::setw(10) << "Last Name" << " | "
+		<< std::setw(10) << "Nickname" << std::endl;
+	for(int i = 0; i < size; i++)
+	{
+		int index = (oldest_index + i) % 8;
+
+	 std::cout << std::setw(10) << i << " | "
+			<< std::setw(10) << truncate_s(contact[index].get_first()) << " | "
+			<< std::setw(10) << truncate_s(contact[index].get_last()) << " | "
+			<< std::setw(10) << truncate_s(contact[index].get_nick()) << std::endl;
+	}
+	return (true);
 }

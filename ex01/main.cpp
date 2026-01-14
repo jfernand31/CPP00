@@ -2,25 +2,62 @@
 #include <iostream>
 #include <sstream>
 
+static bool	is_valid(const std::string tmp)
+{
+	for (size_t i = 0; i < tmp.size(); ++i)
+	{
+		unsigned char c = tmp[i];
+		if(!std::isspace(c))
+			return (true);
+	}
+	return (false);
+}
+
+static void	prompt(int p)
+{
+	if(p == 1)
+		std::cout << "First Name: ";
+	if(p == 2)
+		std::cout << "Last Name: ";
+	if (p == 3)
+		std::cout << "Nickname: ";
+	if (p == 4)
+		std::cout << "Phone Number: ";
+	if (p == 5)
+		std::cout << "Darkest Secret: ";
+}
+
+static void	set_parameter(Contact &c, std::string tmp, int i)
+{
+	if (i == 1)
+		c.set_first(tmp);
+	else if(i == 2)
+		c.set_last(tmp);
+	else if(i == 3)
+		c.set_nick(tmp);
+	else if(i == 4)
+		c.set_number(tmp);
+	else if(i == 5)
+		c.set_secret(tmp);
+}
+
 void	add_c(Contact &c)
 {
 	std::string	tmp;
+	int			i = 1;
 
-	std::cout << "First Name: ";
-	std::getline(std::cin, tmp);
-	c.set_first(tmp);
-	std::cout << "Last Name: ";
-	std::getline(std::cin, tmp);
-	c.set_last(tmp);
-	std::cout << "Nickname: ";
-	std::getline(std::cin, tmp);
-	c.set_nick(tmp);
-	std::cout << "Phone Number: ";
-	std::getline(std::cin, tmp);
-	c.set_number(tmp);
-	std::cout << "Darkest Secret: ";
-	std::getline(std::cin, tmp);
-	c.set_secret(tmp);
+	while (i < 6)
+	{
+		prompt(i);
+		std::getline(std::cin, tmp);
+		if (is_valid(tmp))
+		{
+			set_parameter(c, tmp, i);
+			i++;
+		}
+		else
+			continue ;
+	}
 }
 
 int	main(void)
@@ -44,29 +81,32 @@ int	main(void)
 		if (command == "SEARCH")
 		{
 			std::string	tmp;
-			pb.ListContact();
-			while (true)
-			{
-				std::cout << "Index to display: ";
-				if (!std::getline(std::cin, tmp))
-					return (0);
-				int		value;
-				char	extra;
-				std::stringstream	ss(tmp);
-				if ((ss >> value) && !(ss >> extra))
+			if (pb.ListContact())
+			{	
+				while (true)
 				{
-					if (value >= 0 && value < pb.GetSize())
+					std::cout << "Index to display: ";
+					if (!std::getline(std::cin, tmp))
+						return (0);
+					int		value;
+					char	extra;
+					std::stringstream	ss(tmp);
+					if ((ss >> value) && !(ss >> extra))
 					{
+					if (value >= 0 && value < pb.GetSize())
+						{
 						pb.PrintContact(value);
 						break;
 					}
 					else
 						std::cout << "Invalid index" << std::endl;
 					
-				}
-				else
-				{
-					std::cout << "Invalid index" << std::endl;
+					}
+					else
+					{
+						std::cout << "Invalid index" << std::endl;
+					}
+			
 				}
 			}
 		}
