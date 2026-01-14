@@ -62,7 +62,6 @@ void	add_c(Contact &c)
 
 int	main(void)
 {
-	Contact		c;
 	PhoneBook	pb;
 	std::string	command;
 
@@ -75,6 +74,7 @@ int	main(void)
 			break ;
 		if (command == "ADD")
 		{
+			Contact	c;
 			add_c(c);
 			pb.AddContact(c);
 		}
